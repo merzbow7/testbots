@@ -41,7 +41,8 @@ class Currency(object):
 
     @property
     async def currency(self):
-        await self.update_state()
+        if not self._dict or self.update.date() != self.get_time().date():
+            await self.update_state()
         return self._dict
 
 

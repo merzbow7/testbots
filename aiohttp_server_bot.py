@@ -50,13 +50,8 @@ async def sub_send_worker(session: ClientSession, from_queue: asyncio.Queue, cur
         from_queue.task_done()
 
 
-def create_app():
-    app = web.Application()
-    app.add_routes([web.post(Config.post_handler, post_handler)])
-    return app
-
-
-app = create_app()
+app = web.Application()
+app.add_routes([web.post(Config.post_handler, post_handler)])
 
 if __name__ == '__main__':
     web.run_app(app)

@@ -1,0 +1,1 @@
+web: gunicorn aiohttp_server_bot:app
