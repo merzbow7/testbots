@@ -9,3 +9,4 @@ for file in files:
 
 class Config(object):
     bot_token = os.environ.get('BOT_TOKEN')
+    post_handler = os.environ.get('POST_HANDLER')

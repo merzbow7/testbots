@@ -1,6 +1,7 @@
 import aiohttp
 import asyncio
 from settings import Config
+from cbr import Currency
 
 
 async def fetch_async(session: aiohttp.ClientSession, read_queue: asyncio.Queue, update_id: int) -> int:
@@ -23,7 +24,14 @@ async def send_worker(from_queue: asyncio.Queue, session: aiohttp.ClientSession)
     while True:
         item: dict = await from_queue.get()
         message = item['message']
-        params = {'chat_id': message['chat']['id'], 'text': message['text'],
+        currency = Currency(session)
+        currency_dict = await currency.get_currency_dict()
+        text = message.get('text', '')
+        if text and text.upper() in currency_dict:
+            answer = currency_dict[text.upper()]
+        else:
+            answer = text
+        params = {'chat_id': message['chat']['id'], 'text': answer,
                   "parse_mode": "HTML"}
         async with session.get(url, params=params):
             await asyncio.sleep(0)
